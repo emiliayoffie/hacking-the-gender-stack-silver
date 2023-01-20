@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<svg version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+width='400px' height='400px' viewBox='0 0 400 400'>
+<!-- END OF HEADER -->
+<rect style='opacity:1.0;fill:#FFFFFF;stroke:none' width='400' height='400' x='0' y='0'> </rect>
+<path class='bond-0' d='M 62.6727,200 L 182.537,200' style='fill:none;fill-rule:evenodd;stroke:#191919;stroke-width:2.0px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-0' d='M 182.537,200 L 302.402,200' style='fill:none;fill-rule:evenodd;stroke:#FF0000;stroke-width:2.0px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path  class='atom-0' d='M 43.8145 196.84
+L 47.9745 192.6
+L 42.4545 191.48
+L 43.2945 188.64
+L 48.3745 191.2
+L 47.6545 185.64
+L 50.6545 185.6
+L 49.8145 191.16
+L 54.9745 188.76
+L 55.8545 191.48
+L 50.2545 192.52
+L 54.2545 196.8
+L 51.8145 198.56
+L 49.0545 193.28
+L 46.2545 198.56
+L 43.8145 196.84
+' fill='#191919'/>
+<path  class='atom-1' d='M 308.882 200.08
+Q 308.882 193.28, 312.242 189.48
+Q 315.602 185.68, 321.882 185.68
+Q 328.162 185.68, 331.522 189.48
+Q 334.882 193.28, 334.882 200.08
+Q 334.882 206.96, 331.482 210.88
+Q 328.082 214.76, 321.882 214.76
+Q 315.642 214.76, 312.242 210.88
+Q 308.882 207, 308.882 200.08
+M 321.882 211.56
+Q 326.202 211.56, 328.522 208.68
+Q 330.882 205.76, 330.882 200.08
+Q 330.882 194.52, 328.522 191.72
+Q 326.202 188.88, 321.882 188.88
+Q 317.562 188.88, 315.202 191.68
+Q 312.882 194.48, 312.882 200.08
+Q 312.882 205.8, 315.202 208.68
+Q 317.562 211.56, 321.882 211.56
+' fill='#FF0000'/>
+<path  class='atom-1' d='M 338.282 186
+L 342.122 186
+L 342.122 198.04
+L 356.602 198.04
+L 356.602 186
+L 360.442 186
+L 360.442 214.32
+L 356.602 214.32
+L 356.602 201.24
+L 342.122 201.24
+L 342.122 214.32
+L 338.282 214.32
+L 338.282 186
+' fill='#FF0000'/>
+</svg>
