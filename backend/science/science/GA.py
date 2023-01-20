@@ -59,8 +59,9 @@ def _combine_core_and_rgroups(core, rgroups):
             remove_count += 1
     return product_clean
 
-def rgroup_enumerate(core_smi,rgroups_smiles):
-    keys, values = zip(*rgroup_smiles.items())
+def rgroup_enumerate(core_smi,rgroups):
+    #print(rgroups_smiles)
+    keys, values = zip(*rgroups.items())
     permutations_dicts = [dict(zip(keys, v)) for v in itertools.product(*values)]
     all_products = []
     for i in permutations_dicts:
@@ -219,39 +220,72 @@ def sanitize_smiles(smi):
         return (mol, smi_canon, True)
     except:
         return (None, None, False)
+
+def get_QED_prop(single_mol):
+    data = dict()
+    prop_names = ["MW", "ALOGP", "HBA", "HBD", "PSA", "ROTB", "AROM", "ALERTS"]
+    column_names = [
+        "Image",
+        "MW",
+        "ALOGP",
+        "HBA",
+        "HBD",
+        "PSA",
+        "ROTB",
+        "AROM",
+        "ALERTS",                                                                                                                                                                                     
+        "QED",
+    ]
+    p = single_mol
+    property_dict = {'smiles':Chem.MolToSmiles(p)}
+    props = QED.properties(p)
+    ALL_QED_PROPS = ["MW", "ALOGP", "HBA", "HBD", "PSA", "ROTB", "AROM", "ALERTS"] 
+    qed_props = ALL_QED_PROPS
+    for prop in qed_props:
+         a = float(props.__getattribute__(prop))
+         property_dict[prop] = a
+    property_dict["WEIGHTED_QED"] = round(QED.qed(p), 3)
+    return property_dict
     
-def run(core_smiles,rgroup_smiles,num_gen,num_mutations,num_parents):
+def run(input_dict):
     all_gen_products = []
-    for core_smi in core_smiles:
-        all_products_mol = rgroup_enumerate(core_smi,rgroup_smiles)
+    for core_smi in input_dict['core_smiles']:
+        all_products_mol = rgroup_enumerate(core_smi,input_dict['rgroup_smiles'])
         #Draw.MolsToGridImage(all_products_mol)
         all_products_smi = [Chem.MolToSmiles(i).replace('~','-') for i in all_products_mol]
-        #all_gen_products = []
         gens = {0:all_products_smi}
-        for current_gen in range(num_gen):
+        for current_gen in range(input_dict['num_gen']):
             childs = []
-            parents = random.choices(gens[current_gen],k=num_parents)
+            parents = random.choices(gens[current_gen],k=input_dict['num_parents'])
             for i in parents:
                 num_atom = Chem.MolFromSmiles(i).GetNumAtoms()
                 parent_smi = i
-                for j in range(num_mutations):
+                for j in range(input_dict['num_mutations']):
                     selfie_mutated, smiles_mutated = mutations_random_grin(encoder(parent_smi),num_atom+10)
                     childs.append(smiles_mutated)
             gens[current_gen+1] = childs
         for key in gens:
             all_gen_products += gens[key]
     products = [Chem.MolFromSmiles(smi) for smi in all_gen_products]
-        #Draw.MolsToGridImage(products)
-    return products,gens
-#orismile = "CC(=O)C1CC(C)CC(N2CCCC2)O1"
+    # populate properties in to [ {'smile1':...,'MW':....},{'smile2':...,'MW':...}]
+    all_properties = []
+    for mol in products:
+        props = get_QED_prop(mol) 
+        all_properties.append(props)
+    return all_properties
 
-#selfie_mutated, smiles_canon  = mutations_random_grin(encoder(orismile),25)
-#product_smis = [orismile,smiles_canon]
-#products = [Chem.MolFromSmiles(smi) for smi in product_smis]
-#selfie_mutated, smiles_canon = crossover_random(encoder(orismile),selfie_mutated)
-#product.append(smiles_canon)
-#print("gen")
+input_dict = {'core_smiles':["[*]C1CC([*])CC([*])O1 |$R1;;;;R2;;;R3;$|"],\
+            'rgroup_smiles': {
+                "R1" : ["*N1CCCC1", "*O"],
+                "R2" : ["*C", "*C1CCCNC1"],
+                "R3" : ["CC(-*)=O", "*-C1CCNC1"]
+            },\
+            'num_gen':2,\
+            'num_mutations':6,\
+            'num_parents':2
+}
 
+"""
 core_smi = ["[*]C1CC([*])CC([*])O1 |$R1;;;;R2;;;R3;$|"]
 rgroup_smiles = {
     "R1" : ["*N1CCCC1", "*O"],
@@ -264,14 +298,8 @@ num_gen = 2
 num_mut = 6
 # number of parents in each generation
 num_pat = 2
+"""
 
 
-products,gens = run(core_smi,rgroup_smiles,2,6,2)
-Draw.MolsToGridImage(products)
-
-
-#mol = Chem.MolFromSmiles("Cc1ccc(-c2cc(C(F)(F)F)nn2-c2ccc(S(N)(=O)=O)cc2)cc1")
-##for mol in products:
-##    props = QED.properties(mol)
-#    print(props.MW)
-#    print(props)
+all_properties = run(input_dict)
+print(all_properties)
