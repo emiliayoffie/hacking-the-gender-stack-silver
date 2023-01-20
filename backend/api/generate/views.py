@@ -4,12 +4,14 @@ from drf_spectacular.utils import OpenApiExample
 from drf_spectacular.utils import extend_schema
 from api.generate.serializers import SmilesInputSerializer
 from api.generate.examples import EXAMPLE_REQUEST
+import science.science.GA
 
 
 class smilesInput(APIView):
     serializer_class = SmilesInputSerializer
 
     def get(self, request):
+
         return Response(
             {
                 "status": "OK",
@@ -26,7 +28,5 @@ class smilesInput(APIView):
         serializer.is_valid(raise_exception=True)
 
         return Response(
-            {
-                "smileExample": serializer.validated_data,
-            }
+            {"smileExample": science.science.GA.run(serializer.validated_data)}
         )

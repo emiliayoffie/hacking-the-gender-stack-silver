@@ -1,13 +1,14 @@
 import re
 from rest_framework.serializers import Serializer
 from rest_framework.serializers import ModelSerializer
-from rest_framework.fields import CharField, ListField, IntegerField
+from rest_framework.fields import CharField, ListField, IntegerField, DictField
 
 
 class SmilesInputSerializer(Serializer):
-    smiles = CharField(required=True)
-    rGroup = ListField(required=True)
-    rGroup_Labels = ListField(required=True)
-    numGen = IntegerField(required=True)
-    numMutations = IntegerField(required=True)
-    numParents = IntegerField(required=True)
+    core_smiles = ListField(child=CharField(required=True), required=True)
+    rgroup_smiles = DictField(
+        child=ListField(child=CharField(required=True), required=True)
+    )
+    num_gen = IntegerField(required=True)
+    num_mutations = IntegerField(required=True)
+    num_parents = IntegerField(required=True)
